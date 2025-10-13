@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Início — AI4Her</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="imgs/IA4Her-removebg-preview.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+  <header class="site-header container">
+    <div class="brand">
+      <div class="logo">
+        <a href="index.html">
+          <img src="imgs/IA4Her-removebg-preview.png" alt="Logo">
+        </a>
+      </div>
+      <div class="site-title">AI4Her</div>
+    </div>
+
+    <!-- BOTÃO HAMBURGUER -->
+    <div class="menu-toggle" aria-label="Abrir menu" tabindex="0" role="button" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav class="nav" aria-label="menu principal">
+      <a href="projetos.html">Projetos</a>
+      <a href="cadastros.html#voluntariado">Voluntariado</a>
+      <a href="cadastros.html#doacoes">Doações</a>
+      <a href="transparencia.html">Transparência</a>
+      <a href="cadastros.html#contato">Contato</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Transformando comunidades com tecnologia e voluntariado</h1>
+        <p>Bem-vindo(a)! Conheça nossos projetos, inscreva-se como voluntário(a) ou doe para apoiar ações locais.</p>
+        <p>
+          <a class="btn" href="projetos.html">Ver Projetos</a>
+          <a class="btn" href="cadastros.html#voluntariado">Voluntariar-se</a>
+        </p>
+      </div>
+      <aside class="card">
+        <h3>Notícias rápidas</h3>
+        <p class="muted">Última ação: mutirão de inclusão digital — 25 voluntários capacitados.</p>
+        <hr>
+        <h4>Assine nossa newsletter</h4>
+        <form id="newsletter_form" action="#" method="post" aria-label="Assinar newsletter">
+          <label for="nl_email">E-mail</label>
+          <input id="nl_email" type="email" name="email" required placeholder="seu@exemplo.com" class="input">
+          <span class="msg" id="msg_nl_email"></span>
+
+          <label for="nl_pref">Preferências</label>
+          <select id="nl_pref" name="pref" class="input">
+            <option value="geral">Geral</option>
+            <option value="projetos">Projetos</option>
+            <option value="voluntarios">Voluntariado</option>
+          </select>
+          <span class="msg" id="msg_nl_pref"></span>
+
+          <button type="submit" class="btn">Assinar</button>
+        </form>
+
+      </aside>
+    </section>
+
+    <section class="grid-3">
+      <article class="card">
+        <h3>Vídeo institucional</h3>
+        <div class="media">
+          <video controls class="video-full" poster="assets/Pitch_projeto.mp4" preload="metadata">
+            <source src="assets/Pitch_projeto.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo.
+          </video>
+          <p class="muted">Conheça nossa solução.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Sobre nós</h3>
+        <div class="carousel">
+          <button class="prev" aria-label="Imagem anterior">❮</button>
+          <div class="gallery" aria-live="polite">
+            <picture>
+              <source srcset="imgs/Abertura.webp" type="image/webp">
+              <img src="imgs/Abertura.png" alt="Ação 1" loading="lazy">
+            </picture>
+            <picture>
+              <source srcset="imgs/Problema.webp" type="image/webp">
+              <img src="imgs/Problema.png" alt="Ação 2" loading="lazy">
+            </picture>
+            <picture>
+              <source srcset="imgs/Solução.webp" type="image/webp">
+              <img src="imgs/Solução.png" alt="Ação 3" loading="lazy">
+            </picture>
+            <picture>
+              <source srcset="imgs/Público-alvo.webp" type="image/webp">
+              <img src="imgs/Público-alvo.png" alt="Ação 4" loading="lazy">
+            </picture>
+            <picture><img src="imgs/SustentabilidadeProjeto.png" alt="Ação 5" loading="lazy"></picture>
+            <picture><img src="imgs/Benefícios_Diferencial.png" alt="Ação 6" loading="lazy"></picture>
+            <picture><img src="imgs/ImpactoSocialEsperado.png" alt="Ação 7" loading="lazy"></picture>
+            <picture><img src="imgs/InclusãoAcessibilidade.png" alt="Ação 8" loading="lazy"></picture>
+            <picture><img src="imgs/ParceriaApoiadores.png" alt="Ação 9" loading="lazy"></picture>
+            <picture><img src="imgs/ComoAjudar.png" alt="Ação 10" loading="lazy"></picture>
+            <picture><img src="imgs/UtilidadePublica.png" alt="Ação 11" loading="lazy"></picture>
+            <picture><img src="imgs/InclusaoDigitalDefinicao.png" alt="Ação 12" loading="lazy"></picture>
+            <picture><img src="imgs/InclusaoDigitalImpacto.png" alt="Ação 13" loading="lazy"></picture>
+            <picture><img src="imgs/InclusaoDigitalImportancia.png" alt="Ação 14" loading="lazy"></picture>
+            <picture><img src="imgs/CuriosidadeSTEM.png" alt="Ação 15" loading="lazy"></picture>
+            <picture><img src="imgs/DicasMeninas.png" alt="Ação 16" loading="lazy"></picture>
+            <picture><img src="imgs/MulheresSTEMEmpoderamento.png" alt="Ação 17" loading="lazy"></picture>
+            <picture><img src="imgs/FuturoTecnologia.png" alt="Ação 18" loading="lazy"></picture>
+            <picture><img src="imgs/FuturoTecnologia.png" alt="Ação 19" loading="lazy"></picture>
+            <picture><img src="imgs/Encerramento_Contato.png" alt="Ação 20" loading="lazy"></picture>
+          </div>
+          <button class="next" aria-label="Próxima imagem">❯</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Depoimentos em áudio</h3>
+        <p class="muted">Ouça um depoimento de um voluntário(a)!</p>
+        <audio controls>
+          <source src="assets/depoimento_voluntaria.mp3" type="audio/mpeg">
+          Seu navegador não suporta áudio.
+        </audio>
+      </article>
+    </section>
+
+    <!-- Seção Sobre integrada -->
+    <section id="sobre" class="card" style="margin-top: 1rem;">
+      <h1>Sobre a AI4Her</h1>
+      <p>
+        A <strong>AI4Her</strong> é uma iniciativa inovadora que utiliza Inteligência Artificial para estimular e
+        empoderar meninas de 10 a 15 anos no campo da tecnologia.
+        Unimos entretenimento e educação para despertar o interesse por STEM (Ciência, Tecnologia, Engenharia e
+        Matemática) de forma lúdica, inclusiva e inspiradora.
+      </p>
+
+      <h2>Missão</h2>
+      <p>
+        Promover a participação de meninas no universo STEM, proporcionando experiências criativas, acessíveis e
+        transformadoras com apoio de tecnologias emergentes.
+      </p>
+
+      <h2>Visão</h2>
+      <p>
+        Tornar-se referência nacional no empoderamento feminino em tecnologia e IA, formando a próxima geração de
+        líderes inovadoras até 2030.
+      </p>
+
+      <h2>Valores</h2>
+      <ul>
+        <li>Inclusão e diversidade</li>
+        <li>Empatia e colaboração</li>
+        <li>Inovação com responsabilidade</li>
+        <li>Transparência e ética</li>
+      </ul>
+
+      <h2>Impacto</h2>
+      <p>
+        Nossos programas ajudam meninas a desenvolver habilidades técnicas e socioemocionais, mostrando que elas podem
+        criar, liderar e transformar seu futuro.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="site-footer container">
+    <div class="footer-content">
+      <p>© 2025 AI4Her — Todos os direitos reservados</p>
+
+      <div class="social-icons">
+        <a href="https://www.instagram.com" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.linkedin.com" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://www.youtube.com" title="YouTube" aria-label="YouTube" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a href="mailto:contato@ai4her.org.br" title="Enviar e-mail" aria-label="E-mail">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

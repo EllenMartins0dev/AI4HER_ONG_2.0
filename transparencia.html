@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Transparência — AI4Her</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="imgs/IA4Her-removebg-preview.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+  <header class="site-header container">
+    <div class="brand">
+      <div class="logo">
+        <a href="index.html">
+          <img src="imgs/IA4Her-removebg-preview.png" alt="Logo">
+        </a>
+      </div>
+      <div>
+        <div class="site-title">Transparência</div>
+        <div style="font-size:.9rem;color:var(--muted)">Prestação de contas</div>
+      </div>
+    </div>
+
+    <!-- Botão do menu hambúrguer -->
+    <div class="menu-toggle" role="button" tabindex="0" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </div>
+
+    <nav class="nav" aria-label="menu principal">
+      <a href="projetos.html">Projetos</a>
+      <a href="cadastros.html#voluntariado">Voluntariado</a>
+      <a href="cadastros.html#doacoes">Doações</a>
+      <a href="transparencia.html">Transparência</a>
+      <a href="cadastros.html#contato">Contato</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <article class="card">
+      <h1>Transparência</h1>
+      <p>Relatórios financeiros, processos de governança e dados abertos.</p>
+
+      <h2>Relatórios</h2>
+      <ul>
+        <li><a href="#" target="_blank" id="pdf_anual">Relatório anual 2024 (PDF)</a></li>
+        <li><a href="#" target="_blank" id="pdf_impacto">Relatório de impacto 2024</a></li>
+      </ul>
+
+      <h2>Gráficos de impacto</h2>
+      <div class="charts">
+        <div class="canvas-wrap">
+          <canvas id="chart_pizza"></canvas>
+          <div class="legend">
+            <div class="item"><span class="color color1"></span> CodeGirls</div>
+            <div class="item"><span class="color color2"></span> Inclusão Digital</div>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="chart_line"></canvas>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="chart_bars"></canvas>
+        </div>
+      </div>
+
+      <h2>Políticas</h2>
+      <p>Política de privacidade, termos de uso e código de conduta estão disponíveis para consulta.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-content">
+      <p>© 2025 AI4Her — Todos os direitos reservados</p>
+
+      <div class="social-icons">
+        <a href="https://www.instagram.com" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.linkedin.com" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://www.youtube.com" title="YouTube" aria-label="YouTube" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a href="mailto:contato@ai4her.org.br" title="Enviar e-mail" aria-label="E-mail">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
