@@ -10,7 +10,8 @@ AI4Her é uma iniciativa inovadora que utiliza Inteligência Artificial para est
 - [Funcionalidades](#funcionalidades)  
 - [Tecnologias](#tecnologias)  
 - [Estrutura do Projeto](#estrutura-do-projeto)  
-- [Como Rodar](#como-rodar)  
+- [Como Rodar](#como-rodar)
+- [Novidades (#novidades)]  
 
 ---
 
@@ -90,4 +91,11 @@ git clone https://github.com/seu-usuario/AI4Her.git
 ```
 
 2. Abra na IDE de sua preferência e aproveite!
+
+## Novidades
+- Menu hambúrguer agora funcional e animado em telas pequenas.
+- Blog atualizado com seções de notícias e artigos.
+- Formulários com validações aprimoradas (voluntariado, doações e contato).
+- Exportação de relatórios em PDF com gráficos interativos.
+- Melhorias gerais na responsividade e usabilidade do site.
 
