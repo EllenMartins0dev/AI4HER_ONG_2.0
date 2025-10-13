@@ -11,7 +11,7 @@ AI4Her é uma iniciativa inovadora que utiliza Inteligência Artificial para est
 - [Tecnologias](#tecnologias)  
 - [Estrutura do Projeto](#estrutura-do-projeto)  
 - [Como Rodar](#como-rodar)
-- [Novidades (#novidades)]  
+- [Novidades] (#novidades)  
 
 ---
 
