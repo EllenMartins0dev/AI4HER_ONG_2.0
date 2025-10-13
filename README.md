@@ -93,9 +93,7 @@ git clone https://github.com/seu-usuario/AI4Her.git
 2. Abra na IDE de sua preferência e aproveite!
 
 ## Novidades
-- Menu hambúrguer agora funcional e animado em telas pequenas.
-- Blog atualizado com seções de notícias e artigos.
-- Formulários com validações aprimoradas (voluntariado, doações e contato).
-- Exportação de relatórios em PDF com gráficos interativos.
-- Melhorias gerais na responsividade e usabilidade do site.
+- Menu hambúrguer, agora animado em telas pequenas.
+- 3 novos breakpoints.
+- Aumentar as cores do site de 3 para 8.
 
