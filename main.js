@@ -461,50 +461,50 @@ document.addEventListener('DOMContentLoaded', () => {
   initAll(); // inicializa ao carregar a página
 
   // ---- Função para carregar SPA ----
-async function loadPage(href) {
-  try {
-    const response = await fetch(href);
-    const text = await response.text();
-    const parser = new DOMParser();
-    const newDoc = parser.parseFromString(text, 'text/html');
-    const newMain = newDoc.querySelector('main.container');
+  async function loadPage(href) {
+    try {
+      const response = await fetch(href);
+      const text = await response.text();
+      const parser = new DOMParser();
+      const newDoc = parser.parseFromString(text, 'text/html');
+      const newMain = newDoc.querySelector('main.container');
 
-    if (newMain) {
-      main.innerHTML = newMain.innerHTML;
-      history.pushState(null, '', href);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (newMain) {
+        main.innerHTML = newMain.innerHTML;
+        history.pushState(null, '', href);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Reinicializa scripts gerais
-      initCarousel();
-      initMenu();
+        // Reinicializa scripts gerais
+        initCarousel();
+        initMenu();
 
-      // ✅ Só inicializa formulários se estiver na página de cadastros
-      if (href.includes('cadastros.html')) {
-        initForms();
+        // Inicialização dos formulários
+        if (href.includes('cadastros.html')) {
+          initForms();
+        }
+
+        // Inicialização dos gráficos
+        if (href.includes('transparencia.html')) {
+          initCharts();
+        }
       }
-
-      // ✅ Só inicializa gráficos se estiver na transparência
-      if (href.includes('transparencia.html')) {
-        initCharts();
-      }
+    } catch (err) {
+      console.error('Erro ao carregar página SPA:', err);
     }
-  } catch (err) {
-    console.error('Erro ao carregar página SPA:', err);
   }
-}
 
-// ---- Clique em links SPA ----
-document.body.addEventListener('click', e => {
-  const link = e.target.closest('a');
-  if (!link) return;
+  // ---- Links SPA ----
+  document.body.addEventListener('click', e => {
+    const link = e.target.closest('a');
+    if (!link) return;
 
-  const href = link.getAttribute('href');
-  if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
 
-  e.preventDefault();
-  loadPage(href);
-});
+    e.preventDefault();
+    loadPage(href);
+  });
 
-// ---- Histórico SPA ----
-window.addEventListener('popstate', () => loadPage(location.href));
+  // ---- Histórico SPA ----
+  window.addEventListener('popstate', () => loadPage(location.href));
 });
