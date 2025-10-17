@@ -96,4 +96,6 @@ git clone https://github.com/seu-usuario/AI4Her.git
 - Menu hambúrguer, agora animado em telas pequenas.
 - 3 novos breakpoints.
 - Aumentar as cores do site de 3 para 8.
+- JS funcional.
+- Implementação de SPA simples nas páginas.
 
