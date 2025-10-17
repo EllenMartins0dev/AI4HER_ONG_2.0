@@ -66,6 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (metodo) metodo.style.display = 'none';
       if (pixArea) pixArea.style.display = 'none';
       if (cardArea) cardArea.style.display = 'none';
+
+      // Limpa localStorage após envio bem-sucedido
+      localStorage.removeItem('dadosDoacao');
+      localStorage.removeItem('ultimoTipoDoacao');
     });
   }
 
@@ -87,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
     cvv: document.getElementById('card_cvv')
   };
 
-  // Funções para adicionar/remover required dos campos do cartão
   function addRequired() {
     Object.values(cardFields).forEach(f => f.setAttribute('required', 'required'));
   }
@@ -96,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
     Object.values(cardFields).forEach(f => f.removeAttribute('required'));
   }
 
-  // Mostrar método de pagamento quando o tipo for financeiro
   if (tipo) {
     tipo.addEventListener('change', () => {
       if (tipo.value === 'financeiro') {
@@ -108,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
         pagamento.value = '';
         removeRequired();
       }
+
+      // Salva tipo de doação no localStorage
+      localStorage.setItem('ultimoTipoDoacao', tipo.value);
     });
   }
 
@@ -119,9 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
         removeRequired();
         Object.values(cardFields).forEach(f => f.value = '');
 
-        // Gerar QR Code dinamicamente
         const pixDiv = document.getElementById('pix_qrcode');
-        pixDiv.innerHTML = ''; // limpa caso já tenha QR
+        pixDiv.innerHTML = '';
         new QRCode(pixDiv, {
           text: "pix@ai4her.org",
           width: 180,
@@ -141,10 +145,45 @@ document.addEventListener('DOMContentLoaded', function () {
         removeRequired();
         Object.values(cardFields).forEach(f => f.value = '');
       }
+
+      // Salva método de pagamento
+      localStorage.setItem('ultimoMetodoPagamento', pagamento.value);
     });
   }
 
+  // ---- LocalStorage: restaurar seleção e dados ----
+  const donForm = document.getElementById('donForm');
+  if (donForm) {
+    // Restaurar tipo de doação
+    const salvoTipo = localStorage.getItem('ultimoTipoDoacao');
+    if (salvoTipo) {
+      tipo.value = salvoTipo;
+      tipo.dispatchEvent(new Event('change'));
+    }
 
+    // Restaurar método de pagamento
+    const salvoMetodo = localStorage.getItem('ultimoMetodoPagamento');
+    if (salvoMetodo) {
+      pagamento.value = salvoMetodo;
+      pagamento.dispatchEvent(new Event('change'));
+    }
+
+    // Restaurar dados
+    const salvoForm = localStorage.getItem('dadosDoacao');
+    if (salvoForm) {
+      const dados = JSON.parse(salvoForm);
+      Object.entries(dados).forEach(([key, value]) => {
+        const campo = donForm.elements[key];
+        if (campo) campo.value = value;
+      });
+    }
+
+    // Salvar automaticamente ao digitar
+    donForm.addEventListener('input', () => {
+      const dados = Object.fromEntries(new FormData(donForm).entries());
+      localStorage.setItem('dadosDoacao', JSON.stringify(dados));
+    });
+  }
 
   // ---- Newsletter ----
   const news = document.getElementById('newsletter_form');
@@ -168,11 +207,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const nav = document.querySelector('.nav');
 
   toggle?.addEventListener('click', () => {
-    nav?.classList.toggle('active');   // desliza o menu
-    toggle.classList.toggle('active'); // anima o X
+    nav?.classList.toggle('active');
+    toggle.classList.toggle('active');
   });
-
-
 
   // ---- Carrossel ----
   const carousel = document.querySelector('.carousel');
@@ -338,3 +375,136 @@ function drawBars(canvas, data, labels, color) {
     ctx.fillText(labels[i], x + 2, h - 5);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const main = document.querySelector('main.container');
+  if (!main) return;
+
+  // ---- Inicialização de elementos ----
+  function initCharts() {
+    const pizza = document.getElementById('chart_pizza');
+    const line = document.getElementById('chart_line');
+    const bars = document.getElementById('chart_bars');
+
+    function resizeCanvasAndDraw(canvas, drawFn, ...args) {
+      if (!canvas) return;
+      const parent = canvas.parentElement;
+      canvas.width = parent.clientWidth;
+      canvas.height = 320;
+      drawFn(canvas, ...args);
+    }
+
+    function resizeAllCharts() {
+      resizeCanvasAndDraw(pizza, drawPie, [75, 25], ['#2b7a78', '#56c596'], ['CodeGirls', 'Inclusão Digital']);
+      resizeCanvasAndDraw(line, drawLine, [2, 5, 8, 12, 20, 25, 30], '#2b7a78');
+      resizeCanvasAndDraw(bars, drawBars, [5, 15, 10, 30, 0], ['Norte', 'Nordeste', 'Sul', 'Sudeste', 'Centro-Oeste'], '#2b7a78');
+    }
+
+    window.addEventListener('resize', resizeAllCharts);
+    setTimeout(resizeAllCharts, 100);
+    resizeAllCharts();
+  }
+
+  function initForms() {
+    // Reaplica máscaras, formulários, mensagens, etc.
+    document.querySelectorAll('input[data-mask]').forEach(input => {
+      input.addEventListener('input', e => {
+        const type = input.dataset.mask;
+        if (type === 'cpf') input.value = maskCPF(input.value);
+        if (type === 'phone') input.value = maskPhone(input.value);
+        if (type === 'cep') input.value = maskCEP(input.value);
+      });
+    });
+
+    // Formulários
+    handleForm('form_vol', 'msg_vol', '✅ Obrigado! Sua inscrição como voluntário(a) foi enviada.');
+    handleForm('donForm', 'msg_don', '✅ Obrigado! Sua doação foi enviada com sucesso.');
+    handleForm('contact_form', 'msg_contato', '✅ Obrigado! Sua mensagem foi enviada com sucesso.');
+  }
+
+  function initCarousel() {
+    const carousel = document.querySelector('.carousel');
+    if (!carousel) return;
+
+    const gallery = carousel.querySelector('.gallery');
+    const slides = gallery.querySelectorAll('picture');
+    const prev = carousel.querySelector('.prev');
+    const next = carousel.querySelector('.next');
+    let index = 0;
+
+    function showSlide(i) {
+      index = (i + slides.length) % slides.length;
+      gallery.style.transform = `translateX(${-index * 100}%)`;
+    }
+
+    prev?.addEventListener('click', () => showSlide(index - 1));
+    next?.addEventListener('click', () => showSlide(index + 1));
+    setInterval(() => showSlide(index + 1), 5000);
+  }
+
+  function initMenu() {
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.nav');
+    toggle?.addEventListener('click', () => {
+      nav?.classList.toggle('active');
+      toggle.classList.toggle('active');
+    });
+  }
+
+  function initAll() {
+    initCharts();
+    initForms();
+    initCarousel();
+    initMenu();
+  }
+
+  initAll(); // inicializa ao carregar a página
+
+  // ---- Função para carregar SPA ----
+async function loadPage(href) {
+  try {
+    const response = await fetch(href);
+    const text = await response.text();
+    const parser = new DOMParser();
+    const newDoc = parser.parseFromString(text, 'text/html');
+    const newMain = newDoc.querySelector('main.container');
+
+    if (newMain) {
+      main.innerHTML = newMain.innerHTML;
+      history.pushState(null, '', href);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Reinicializa scripts gerais
+      initCarousel();
+      initMenu();
+
+      // ✅ Só inicializa formulários se estiver na página de cadastros
+      if (href.includes('cadastros.html')) {
+        initForms();
+      }
+
+      // ✅ Só inicializa gráficos se estiver na transparência
+      if (href.includes('transparencia.html')) {
+        initCharts();
+      }
+    }
+  } catch (err) {
+    console.error('Erro ao carregar página SPA:', err);
+  }
+}
+
+// ---- Clique em links SPA ----
+document.body.addEventListener('click', e => {
+  const link = e.target.closest('a');
+  if (!link) return;
+
+  const href = link.getAttribute('href');
+  if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
+
+  e.preventDefault();
+  loadPage(href);
+});
+
+// ---- Histórico SPA ----
+window.addEventListener('popstate', () => loadPage(location.href));
+});
