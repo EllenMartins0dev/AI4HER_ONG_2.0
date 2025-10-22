@@ -214,6 +214,7 @@ body {
              HERO
 =========================== */
 .hero {
+  background-color: #111111; 
   background: linear-gradient(90deg, rgba(79, 70, 229, 0.2), rgba(96, 165, 250, 0.2));
   padding: 28px;
   border-radius: var(--radius);
@@ -224,14 +225,10 @@ body {
   align-items: center;
 }
 
-.hero h1 {
-  margin: 0;
-  font-size: 1.6rem;
-}
-
+.hero h1,
 .hero p {
-  color: var(--muted);
-  margin-top: 8px;
+  color: #fff; /* Texto branco para aumentar o contraste */
+  font-weight: bold;
 }
 
 
@@ -252,7 +249,7 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
-.card h2 {
+.card h3 {
   font-size: var(--fs-lg);
 }
 
@@ -384,6 +381,7 @@ select+.msg {
   height: 320px;
 }
 
+
 /* Legenda */
 .legend {
   display: flex;
@@ -461,7 +459,7 @@ select+.msg {
   cursor: pointer;
   border-radius: 50%;
   z-index: 2;
-  opacity: 0.6;
+  opacity: 0.6; 
   transition: opacity 0.3s, color 0.3s;
 }
 
@@ -632,6 +630,7 @@ select+.msg {
   background: var(--dark);
 }
 
+
 /* ===========================
        UTILITÁRIOS / GRID
 =========================== */
@@ -656,6 +655,7 @@ select+.msg {
 .col-span-3 {
   grid-column: span 3;
 }
+
 
 /* ===========================
           CADASTROS
