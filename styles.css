@@ -383,6 +383,8 @@ select+.msg {
   height: 320px;
 }
 
+
+/* Legenda */
 .legend {
   display: flex;
   flex-wrap: wrap;
