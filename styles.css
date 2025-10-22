@@ -177,7 +177,6 @@ body {
 
 .menu-toggle {
   display: none;
-  /* escondido por padrão em telas grandes */
   position: absolute;
   top: 50%;
   right: 20px;
@@ -349,7 +348,6 @@ select+.msg {
   font-size: 0.8rem;
 }
 
-
 .msg.error {
   color: var(--danger);
 }
@@ -460,7 +458,7 @@ select+.msg {
   cursor: pointer;
   border-radius: 50%;
   z-index: 2;
-  opacity: 0.2;
+  opacity: 0.6; 
   transition: opacity 0.3s, color 0.3s;
 }
 
