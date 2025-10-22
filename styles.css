@@ -459,7 +459,7 @@ select+.msg {
   cursor: pointer;
   border-radius: 50%;
   z-index: 2;
-  opacity: 0.9; 
+  opacity: 0.6; 
   transition: opacity 0.3s, color 0.3s;
 }
 
@@ -472,11 +472,11 @@ select+.msg {
 }
 
 .carousel .prev {
-  left: -7px;
+  left: 10px;
 }
 
 .carousel .next {
-  right: -6px;
+  right: 10px;
 }
 
 .card audio {
