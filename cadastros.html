@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cadastros — AI4Her</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="imgs/IA4Her-removebg-preview.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="img/png" href="imgs/IA4Her-removebg-preview.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 
@@ -60,7 +60,8 @@
           <span class="msg" id="msg_vol_cpf"></span>
 
           <label for="vol_phone">Telefone *</label>
-          <input id="vol_phone" name="telefone" required aria-required="true" class="input" placeholder="(00) 90000-0000">
+          <input id="vol_phone" name="telefone" required aria-required="true" class="input"
+            placeholder="(00) 90000-0000">
           <span class="msg" id="msg_vol_phone"></span>
 
           <label for="vol_cidade">Cidade *</label>
@@ -136,11 +137,13 @@
           <!-- Cartões -->
           <div id="card_area" style="display:none; margin-top:10px;">
             <label for="card_name">Nome do Titular *</label>
-            <input id="card_name" type="text" class="input" required aria-required="true" placeholder="Como está no cartão">
+            <input id="card_name" type="text" class="input" required aria-required="true"
+              placeholder="Como está no cartão">
             <span class="msg" id="msg_card_name"></span>
 
             <label for="card_number">Número do Cartão *</label>
-            <input id="card_number" type="text" class="input" required aria-required="true" maxlength="19" placeholder="XXXX XXXX XXXX XXXX">
+            <input id="card_number" type="text" class="input" required aria-required="true" maxlength="19"
+              placeholder="XXXX XXXX XXXX XXXX">
             <span class="msg" id="msg_card_number"></span>
 
             <label for="card_expiry">Validade *</label>
@@ -148,7 +151,8 @@
             <span class="msg" id="msg_card_expiry"></span>
 
             <label for="card_cvv">CVV *</label>
-            <input id="card_cvv" type="text" required aria-required="true" class="input" maxlength="3" placeholder="***">
+            <input id="card_cvv" type="text" required aria-required="true" class="input" maxlength="3"
+              placeholder="***">
             <span class="msg" id="msg_card_cvv"></span>
           </div>
 
@@ -194,6 +198,7 @@
 
   </main>
 
+  <!-- Rodapé -->
   <footer class="site-footer container">
     <div class="footer-content">
       <p>© 2025 AI4Her — Todos os direitos reservados</p>
@@ -214,7 +219,7 @@
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <script src="js/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </body>
 
