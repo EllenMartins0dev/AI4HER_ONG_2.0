@@ -215,7 +215,7 @@ body {
              HERO
 =========================== */
 .hero {
-  background-color: #111111; /* fundo sólido detectável */
+  background-color: #111111; /* base escura sólida */
   background: linear-gradient(90deg, rgba(79, 70, 229, 0.2), rgba(96, 165, 250, 0.2));
   padding: 28px;
   border-radius: var(--radius);
