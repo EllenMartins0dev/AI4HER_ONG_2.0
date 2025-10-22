@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ---- Máscaras nos inputs ----
   document.querySelectorAll('input[data-mask]').forEach(input => {
-    input.addEventListener('input', e => {
+    input.addEventListener('input', () => {
       const type = input.dataset.mask;
       if (type === 'cpf') input.value = maskCPF(input.value);
       if (type === 'phone') input.value = maskPhone(input.value);
@@ -42,40 +42,81 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ---- Função para lidar com formulários ----
-  function handleForm(formId, msgId, successText) {
+  // ---- Função para lidar com formulários e salvar apenas nome e email ----
+  function handleForm(formId, msgId, successText, storageKeyPrefix) {
     const form = document.getElementById(formId);
     const msgEl = document.getElementById(msgId);
     if (!form || !msgEl) return;
 
+    // Adiciona role="alert" para acessibilidade
+    msgEl.setAttribute('role', 'alert');
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      let isValid = true;
 
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      // Validação dos campos obrigatórios
+      form.querySelectorAll('input, textarea, select').forEach(input => {
+        if (!input.checkValidity()) {
+          input.setAttribute('aria-invalid', 'true');
+          isValid = false;
+        } else {
+          input.removeAttribute('aria-invalid');
+        }
+      });
+
+      if (!isValid) {
+        showMessage(msgEl, '❌ Por favor, preencha todos os campos obrigatórios corretamente.', 'erro');
+        msgEl.focus(); // foco para leitores de tela
         return;
       }
 
+      // Salva apenas nome e email no localStorage
+      const nomeInput = form.querySelector('input[name="nome"]') || form.querySelector('input[type="text"]');
+      const emailInput = form.querySelector('input[type="email"]');
+      if (nomeInput && emailInput) {
+        localStorage.setItem(storageKeyPrefix + '_nome', nomeInput.value);
+        localStorage.setItem(storageKeyPrefix + '_email', emailInput.value);
+      }
+
       showMessage(msgEl, successText, 'sucesso');
+      msgEl.focus(); // foco para leitores de tela
       form.reset();
 
-      // Esconder campos extras ao resetar
+      // Esconder campos extras específicos de doações
       const metodo = document.getElementById('metodo_pagamento');
       const pixArea = document.getElementById('pix_area');
       const cardArea = document.getElementById('card_area');
       if (metodo) metodo.style.display = 'none';
-      if (pixArea) pixArea.style.display = 'none';
-      if (cardArea) cardArea.style.display = 'none';
+      if (pixArea) {
+        pixArea.style.display = 'none';
+        pixArea.setAttribute('aria-hidden', 'true');
+      }
+      if (cardArea) {
+        cardArea.style.display = 'none';
+        cardArea.setAttribute('aria-hidden', 'true');
+      }
 
-      // Limpa localStorage após envio bem-sucedido
+      // Limpar localStorage extra de doação
       localStorage.removeItem('dadosDoacao');
       localStorage.removeItem('ultimoTipoDoacao');
     });
   }
 
-  handleForm('form_vol', 'msg_vol', '✅ Obrigado! Sua inscrição como voluntário(a) foi enviada.');
-  handleForm('donForm', 'msg_don', '✅ Obrigado! Sua doação foi enviada com sucesso.');
-  handleForm('contact_form', 'msg_contato', '✅ Obrigado! Sua mensagem foi enviada com sucesso.');
+  // ---- Inicialização dos formulários ----
+  handleForm('form_vol', 'msg_vol', '✅ Inscrição enviada com sucesso!', 'vol');
+  handleForm('donForm', 'msg_don', '✅ Doação registrada com sucesso!', 'don');
+  handleForm('contact_form', 'msg_contato', '✅ Mensagem enviada com sucesso!', 'cont');
+
+  // ---- Função para exibir mensagens ----
+  function showMessage(element, text, type) {
+    element.textContent = text;
+    element.className = 'msg ' + type; // aplica 'erro' ou 'sucesso'
+    setTimeout(() => {
+      element.textContent = '';
+      element.className = 'msg';
+    }, 4000);
+  }
 
   // ---- Mostrar método e opções de pagamento ----
   const tipo = document.getElementById('don_tipo');
@@ -103,18 +144,21 @@ document.addEventListener('DOMContentLoaded', function () {
     tipo.addEventListener('change', () => {
       if (tipo.value === 'financeiro') {
         metodo.style.display = 'flex';
+        metodo.setAttribute('aria-hidden', 'false');
       } else {
         metodo.style.display = 'none';
+        metodo.setAttribute('aria-hidden', 'true');
         pixArea.style.display = 'none';
+        pixArea.setAttribute('aria-hidden', 'true');
         cardArea.style.display = 'none';
+        cardArea.setAttribute('aria-hidden', 'true');
         pagamento.value = '';
         removeRequired();
       }
-
-      // Salva tipo de doação no localStorage
       localStorage.setItem('ultimoTipoDoacao', tipo.value);
     });
   }
+
 
   if (pagamento) {
     pagamento.addEventListener('change', () => {
@@ -188,28 +232,74 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---- Newsletter ----
   const news = document.getElementById('newsletter_form');
   if (news) {
-    const msgEl = document.createElement('div');
-    msgEl.className = 'msg sucesso';
-    msgEl.style.display = 'none';
-    msgEl.style.marginTop = '10px';
-    news.appendChild(msgEl);
+    // Criar elemento de mensagem (ou reutilizar se já existir)
+    let msgEl = document.getElementById('msg_news');
+    if (!msgEl) {
+      msgEl = document.createElement('span');
+      msgEl.id = 'msg_news';
+      msgEl.className = 'msg';
+      msgEl.setAttribute('role', 'alert'); // acessibilidade
+      msgEl.style.display = 'block';
+      msgEl.style.marginTop = '10px';
+      news.appendChild(msgEl);
+    }
 
+    // Adicionar submit
     news.addEventListener('submit', e => {
       e.preventDefault();
-      if (!news.checkValidity()) { news.reportValidity(); return; }
-      showMessage(msgEl, "✅ Pedido de assinatura aceito! A resposta será enviada por e-mail.");
+
+      // Validação do formulário
+      let isValid = true;
+      news.querySelectorAll('input, select').forEach(input => {
+        if (!input.checkValidity()) {
+          input.setAttribute('aria-invalid', 'true');
+          isValid = false;
+        } else {
+          input.removeAttribute('aria-invalid');
+        }
+      });
+
+      if (!isValid) {
+        msgEl.textContent = '❌ Por favor, preencha todos os campos corretamente.';
+        msgEl.className = 'msg erro';
+        msgEl.focus();
+        return;
+      }
+
+      // Salvar email e preferências no localStorage
+      const emailInput = news.querySelector('input[type="email"]');
+      const prefSelect = news.querySelector('select[name="pref"]');
+      if (emailInput) localStorage.setItem('newsletter_email', emailInput.value);
+      if (prefSelect) localStorage.setItem('newsletter_pref', prefSelect.value);
+
+      // Mostrar mensagem de sucesso
+      showMessage(msgEl, "✅ Pedido de assinatura aceito! A resposta será enviada por e-mail.", 'sucesso');
+
       news.reset();
     });
   }
+
 
   // ---- Menu hambúrguer ---- 
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
 
   toggle?.addEventListener('click', () => {
+    const isActive = toggle.classList.toggle('active');
     nav?.classList.toggle('active');
-    toggle.classList.toggle('active');
+
+    // Acessibilidade
+    toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
   });
+
+  // Permite abrir/fechar o menu com Enter ou Espaço
+  toggle?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle.click();
+    }
+  });
+
 
   // ---- Carrossel ----
   const carousel = document.querySelector('.carousel');
@@ -229,6 +319,8 @@ document.addEventListener('DOMContentLoaded', function () {
     next?.addEventListener('click', () => showSlide(index + 1));
     setInterval(() => showSlide(index + 1), 5000);
   }
+
+
 
   // ---- Gráficos ----
   const pizza = document.getElementById('chart_pizza');
