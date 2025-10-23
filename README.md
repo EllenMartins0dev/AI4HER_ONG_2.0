@@ -66,8 +66,13 @@ AI4Her/
 ├── transparencia.html
 ├── blog.html
 │
-├── styles.css
-├── main.js
+├── css/
+│ └── styles.css
+│ └── style.min.css
+│
+├── js/
+│ └── main.js
+│ └── main.min.js
 │
 ├── imgs/
 │ └── IA4Her- logo
