@@ -674,7 +674,7 @@ select:focus,
 @media (max-width:880px) {
   .hero { grid-template-columns: 1fr; }
   .charts { grid-template-columns: 1fr; }
-  .gallery img {  height: auto; }
+  .gallery img {  height: auto; } /* Garantir que as imagens vão ser visíveis no card, mesmo em telas menores */
   .menu-toggle { display: flex; }
   .nav {
     display: none;
@@ -701,7 +701,7 @@ select:focus,
 
 @media (max-width:480px) {
   .hero h1 { font-size: 1.4rem; }
-  .gallery img { height: auto; }
+  .gallery img { height: auto; } /* Garantir que as imagens vão ser visíveis no card, mesmo em telas menores */
   .card audio { width: 100%; }
 }
 
