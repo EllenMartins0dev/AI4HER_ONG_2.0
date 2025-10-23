@@ -47,16 +47,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById(formId);
     const msgEl = document.getElementById(msgId);
     if (!form || !msgEl) return;
-
-    // Adiciona role="alert" para acessibilidade
     msgEl.setAttribute('role', 'alert');
-
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       let isValid = true;
-
       // Validação dos campos obrigatórios
       form.querySelectorAll('input, textarea, select').forEach(input => {
+        if (input.offsetParent === null) return; // pula campos escondidos, para não dar conflito na opção do pix
         if (!input.checkValidity()) {
           input.setAttribute('aria-invalid', 'true');
           isValid = false;
@@ -64,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
           input.removeAttribute('aria-invalid');
         }
       });
+
 
       if (!isValid) {
         showMessage(msgEl, '❌ Por favor, preencha todos os campos obrigatórios corretamente.', 'erro');
