@@ -64,11 +64,11 @@ body {
 
 .skip-link {
   position: absolute;
-  left: -999px; /
+  left: -999px;/
 }
 
 .skip-link:focus {
-  left: 10px;   
+  left: 10px;
   top: 10px;
   background: #4f46e5;
   color: white;
@@ -214,7 +214,7 @@ body {
              HERO
 =========================== */
 .hero {
-  background-color: #111111; 
+  background-color: #111111;
   background: linear-gradient(90deg, rgba(79, 70, 229, 0.2), rgba(96, 165, 250, 0.2));
   padding: 28px;
   border-radius: var(--radius);
@@ -227,7 +227,8 @@ body {
 
 .hero h1,
 .hero p {
-  color: #fff; /* Texto branco para aumentar o contraste */
+  color: #fff;
+  /* Texto branco para aumentar o contraste */
   font-weight: bold;
 }
 
@@ -296,8 +297,10 @@ textarea {
   font-weight: 700;
   cursor: pointer;
   transition: background 0.3s;
-  margin-right: 10px; /* espaço à direita entre os botões do hero*/
-  margin-bottom: 10px; /* espaço abaixo para telas menores */
+  margin-right: 10px;
+  /* espaço à direita entre os botões do hero*/
+  margin-bottom: 10px;
+  /* espaço abaixo para telas menores */
 }
 
 .btn:hover {
@@ -470,7 +473,7 @@ select+.msg {
   cursor: pointer;
   border-radius: 50%;
   z-index: 2;
-  opacity: 0.9; 
+  opacity: 0.9;
   transition: opacity 0.3s, color 0.3s;
 
 }
