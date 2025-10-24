@@ -58,6 +58,7 @@ AI4Her/
 ├── assets/
 │   ├── vídeos (pitch)
 │   └── áudios (depoimentos)
+│   └── transcrição de vídeo e áudio
 └── README.md
 ```
 
