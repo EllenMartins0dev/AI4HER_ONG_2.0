@@ -63,11 +63,11 @@ AI4Her/
 
 
 ## Como Rodar
-# Clone o repositório
+- Clone o repositório
 ```
 git clone https://github.com/EllenMartins0dev/AI4HER_ONG_2.0.git
 ```
-# Abra na IDE de sua preferência
+- Abra na IDE de sua preferência
 
 
 ## Novidades
