@@ -29,10 +29,48 @@ function showMessage(el, text, type = 'sucesso', duration = 4000) {
   setTimeout(() => el.style.display = 'none', duration);
 }
 
-// ---- DOMContentLoaded ----
-document.addEventListener('DOMContentLoaded', function () {
+// ---- Função para lidar com formulários ----
+function handleForm(formId, msgId, successText, storageKeyPrefix) {
+  const form = document.getElementById(formId);
+  const msgEl = document.getElementById(msgId);
+  if (!form || !msgEl) return;
 
-  // ---- Máscaras nos inputs ----
+  msgEl.setAttribute('role', 'alert');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let isValid = true;
+
+    form.querySelectorAll('input, textarea, select').forEach(input => {
+      if (!input.checkValidity()) {
+        input.setAttribute('aria-invalid', 'true');
+        isValid = false;
+      } else input.removeAttribute('aria-invalid');
+    });
+
+    if (!isValid) {
+      showMessage(msgEl, '❌ Por favor, preencha todos os campos obrigatórios corretamente.', 'erro');
+      msgEl.focus();
+      return;
+    }
+
+    const nomeInput = form.querySelector('input[name="nome"]') || form.querySelector('input[type="text"]');
+    const emailInput = form.querySelector('input[type="email"]');
+    if (nomeInput && emailInput) {
+      localStorage.setItem(storageKeyPrefix + '_nome', nomeInput.value);
+      localStorage.setItem(storageKeyPrefix + '_email', emailInput.value);
+    }
+
+    showMessage(msgEl, successText, 'sucesso');
+    msgEl.focus();
+    form.reset();
+  });
+}
+
+// ---- DOMContentLoaded ----
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ---- Aplicar máscaras ----
   document.querySelectorAll('input[data-mask]').forEach(input => {
     input.addEventListener('input', () => {
       const type = input.dataset.mask;
@@ -42,264 +80,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ---- Função para lidar com formulários e salvar apenas nome e email ----
-  function handleForm(formId, msgId, successText, storageKeyPrefix) {
-    const form = document.getElementById(formId);
-    const msgEl = document.getElementById(msgId);
-    if (!form || !msgEl) return;
-
-    // Adiciona role="alert" para acessibilidade
-    msgEl.setAttribute('role', 'alert');
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      let isValid = true;
-
-      // Validação dos campos obrigatórios
-      form.querySelectorAll('input, textarea, select').forEach(input => {
-        if (!input.checkValidity()) {
-          input.setAttribute('aria-invalid', 'true');
-          isValid = false;
-        } else {
-          input.removeAttribute('aria-invalid');
-        }
-      });
-
-      if (!isValid) {
-        showMessage(msgEl, '❌ Por favor, preencha todos os campos obrigatórios corretamente.', 'erro');
-        msgEl.focus(); // foco para leitores de tela
-        return;
-      }
-
-      // Salva apenas nome e email no localStorage
-      const nomeInput = form.querySelector('input[name="nome"]') || form.querySelector('input[type="text"]');
-      const emailInput = form.querySelector('input[type="email"]');
-      if (nomeInput && emailInput) {
-        localStorage.setItem(storageKeyPrefix + '_nome', nomeInput.value);
-        localStorage.setItem(storageKeyPrefix + '_email', emailInput.value);
-      }
-
-      showMessage(msgEl, successText, 'sucesso');
-      msgEl.focus(); // foco para leitores de tela
-      form.reset();
-
-      // Esconder campos extras específicos de doações
-      const metodo = document.getElementById('metodo_pagamento');
-      const pixArea = document.getElementById('pix_area');
-      const cardArea = document.getElementById('card_area');
-      if (metodo) metodo.style.display = 'none';
-      if (pixArea) {
-        pixArea.style.display = 'none';
-        pixArea.setAttribute('aria-hidden', 'true');
-      }
-      if (cardArea) {
-        cardArea.style.display = 'none';
-        cardArea.setAttribute('aria-hidden', 'true');
-      }
-
-      // Limpar localStorage extra de doação
-      localStorage.removeItem('dadosDoacao');
-      localStorage.removeItem('ultimoTipoDoacao');
-    });
-  }
-
-  // ---- Inicialização dos formulários ----
+  // ---- Inicializar formulários ----
   handleForm('form_vol', 'msg_vol', '✅ Inscrição enviada com sucesso!', 'vol');
   handleForm('donForm', 'msg_don', '✅ Doação registrada com sucesso!', 'don');
   handleForm('contact_form', 'msg_contato', '✅ Mensagem enviada com sucesso!', 'cont');
 
-  // ---- Função para exibir mensagens ----
-  function showMessage(element, text, type) {
-    element.textContent = text;
-    element.className = 'msg ' + type; // aplica 'erro' ou 'sucesso'
-    setTimeout(() => {
-      element.textContent = '';
-      element.className = 'msg';
-    }, 4000);
-  }
-
-  // ---- Mostrar método e opções de pagamento ----
-  const tipo = document.getElementById('don_tipo');
-  const metodo = document.getElementById('metodo_pagamento');
-  const pagamento = document.getElementById('don_pagamento');
-  const pixArea = document.getElementById('pix_area');
-  const cardArea = document.getElementById('card_area');
-
-  const cardFields = {
-    name: document.getElementById('card_name'),
-    number: document.getElementById('card_number'),
-    expiry: document.getElementById('card_expiry'),
-    cvv: document.getElementById('card_cvv')
-  };
-
-  function addRequired() {
-    Object.values(cardFields).forEach(f => f.setAttribute('required', 'required'));
-  }
-
-  function removeRequired() {
-    Object.values(cardFields).forEach(f => f.removeAttribute('required'));
-  }
-
-  if (tipo) {
-    tipo.addEventListener('change', () => {
-      if (tipo.value === 'financeiro') {
-        metodo.style.display = 'flex';
-        metodo.setAttribute('aria-hidden', 'false');
-      } else {
-        metodo.style.display = 'none';
-        metodo.setAttribute('aria-hidden', 'true');
-        pixArea.style.display = 'none';
-        pixArea.setAttribute('aria-hidden', 'true');
-        cardArea.style.display = 'none';
-        cardArea.setAttribute('aria-hidden', 'true');
-        pagamento.value = '';
-        removeRequired();
-      }
-      localStorage.setItem('ultimoTipoDoacao', tipo.value);
-    });
-  }
-
-
-  if (pagamento) {
-    pagamento.addEventListener('change', () => {
-      if (pagamento.value === 'pix') {
-        pixArea.style.display = 'block';
-        cardArea.style.display = 'none';
-        removeRequired();
-        Object.values(cardFields).forEach(f => f.value = '');
-
-        const pixDiv = document.getElementById('pix_qrcode');
-        pixDiv.innerHTML = '';
-        new QRCode(pixDiv, {
-          text: "pix@ai4her.org",
-          width: 180,
-          height: 180,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
-        });
-
-      } else if (pagamento.value === 'debito' || pagamento.value === 'credito') {
-        cardArea.style.display = 'grid';
-        pixArea.style.display = 'none';
-        addRequired();
-      } else {
-        pixArea.style.display = 'none';
-        cardArea.style.display = 'none';
-        removeRequired();
-        Object.values(cardFields).forEach(f => f.value = '');
-      }
-
-      // Salva método de pagamento
-      localStorage.setItem('ultimoMetodoPagamento', pagamento.value);
-    });
-  }
-
-  // ---- LocalStorage: restaurar seleção e dados ----
-  const donForm = document.getElementById('donForm');
-  if (donForm) {
-    // Restaurar tipo de doação
-    const salvoTipo = localStorage.getItem('ultimoTipoDoacao');
-    if (salvoTipo) {
-      tipo.value = salvoTipo;
-      tipo.dispatchEvent(new Event('change'));
-    }
-
-    // Restaurar método de pagamento
-    const salvoMetodo = localStorage.getItem('ultimoMetodoPagamento');
-    if (salvoMetodo) {
-      pagamento.value = salvoMetodo;
-      pagamento.dispatchEvent(new Event('change'));
-    }
-
-    // Restaurar dados
-    const salvoForm = localStorage.getItem('dadosDoacao');
-    if (salvoForm) {
-      const dados = JSON.parse(salvoForm);
-      Object.entries(dados).forEach(([key, value]) => {
-        const campo = donForm.elements[key];
-        if (campo) campo.value = value;
-      });
-    }
-
-    // Salvar automaticamente ao digitar
-    donForm.addEventListener('input', () => {
-      const dados = Object.fromEntries(new FormData(donForm).entries());
-      localStorage.setItem('dadosDoacao', JSON.stringify(dados));
-    });
-  }
-
-  // ---- Newsletter ----
-  const news = document.getElementById('newsletter_form');
-  if (news) {
-    // Criar elemento de mensagem (ou reutilizar se já existir)
-    let msgEl = document.getElementById('msg_news');
-    if (!msgEl) {
-      msgEl = document.createElement('span');
-      msgEl.id = 'msg_news';
-      msgEl.className = 'msg';
-      msgEl.setAttribute('role', 'alert'); // acessibilidade
-      msgEl.style.display = 'block';
-      msgEl.style.marginTop = '10px';
-      news.appendChild(msgEl);
-    }
-
-    // Adicionar submit
-    news.addEventListener('submit', e => {
-      e.preventDefault();
-
-      // Validação do formulário
-      let isValid = true;
-      news.querySelectorAll('input, select').forEach(input => {
-        if (!input.checkValidity()) {
-          input.setAttribute('aria-invalid', 'true');
-          isValid = false;
-        } else {
-          input.removeAttribute('aria-invalid');
-        }
-      });
-
-      if (!isValid) {
-        msgEl.textContent = '❌ Por favor, preencha todos os campos corretamente.';
-        msgEl.className = 'msg erro';
-        msgEl.focus();
-        return;
-      }
-
-      // Salvar email e preferências no localStorage
-      const emailInput = news.querySelector('input[type="email"]');
-      const prefSelect = news.querySelector('select[name="pref"]');
-      if (emailInput) localStorage.setItem('newsletter_email', emailInput.value);
-      if (prefSelect) localStorage.setItem('newsletter_pref', prefSelect.value);
-
-      // Mostrar mensagem de sucesso
-      showMessage(msgEl, "✅ Pedido de assinatura aceito! A resposta será enviada por e-mail.", 'sucesso');
-
-      news.reset();
-    });
-  }
-
-
-  // ---- Menu hambúrguer ---- 
+  // ---- Menu hambúrguer ----
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
-
   toggle?.addEventListener('click', () => {
     const isActive = toggle.classList.toggle('active');
     nav?.classList.toggle('active');
-
-    // Acessibilidade
     toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
   });
-
-  // Permite abrir/fechar o menu com Enter ou Espaço
   toggle?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       toggle.click();
     }
   });
-
 
   // ---- Carrossel ----
   const carousel = document.querySelector('.carousel');
@@ -309,24 +108,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const prev = carousel.querySelector('.prev');
     const next = carousel.querySelector('.next');
     let index = 0;
-
     function showSlide(i) {
       index = (i + slides.length) % slides.length;
       gallery.style.transform = `translateX(${-index * 100}%)`;
     }
-
     prev?.addEventListener('click', () => showSlide(index - 1));
     next?.addEventListener('click', () => showSlide(index + 1));
     setInterval(() => showSlide(index + 1), 5000);
   }
 
-
-
   // ---- Gráficos ----
   const pizza = document.getElementById('chart_pizza');
   const line = document.getElementById('chart_line');
   const bars = document.getElementById('chart_bars');
-
   function resizeCanvasAndDraw(canvas, drawFn, ...args) {
     if (!canvas) return;
     const parent = canvas.parentElement;
@@ -334,13 +128,11 @@ document.addEventListener('DOMContentLoaded', function () {
     canvas.height = 320;
     drawFn(canvas, ...args);
   }
-
   function resizeAllCharts() {
     resizeCanvasAndDraw(pizza, drawPie, [75, 25], ['#2b7a78', '#56c596'], ['CodeGirls', 'Inclusão Digital']);
     resizeCanvasAndDraw(line, drawLine, [2, 5, 8, 12, 20, 25, 30], '#2b7a78');
     resizeCanvasAndDraw(bars, drawBars, [5, 15, 10, 30, 0], ['Norte', 'Nordeste', 'Sul', 'Sudeste', 'Centro-Oeste'], '#2b7a78');
   }
-
   window.addEventListener('resize', resizeAllCharts);
   setTimeout(resizeAllCharts, 100);
   resizeAllCharts();

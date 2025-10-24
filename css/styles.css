@@ -296,7 +296,18 @@ textarea {
   font-weight: 700;
   cursor: pointer;
   transition: background 0.3s;
+  margin-right: 10px; /* espaço à direita entre os botões do hero*/
+  margin-bottom: 10px; /* espaço abaixo para telas menores */
 }
+
+.btn:hover {
+  background: #5b54f3;
+}
+
+.btn.secondary {
+  background: var(--secondary);
+}
+
 
 .btn:hover {
   background: #5b54f3;
